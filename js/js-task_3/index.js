@@ -73,34 +73,50 @@ console.log(n, " num = " + num);
 
 //8) 
 console.log("***********8.");
-
-let namberUser=prompt("Please, enter the number");
 num=0;
 sum=0;
-while (namberUser != ''  ||  namberUser != false){
-    sum = +namberUser + sum;
-    num++;  
-    namberUser=prompt("Please, enter the number");
-    if(namberUser == ''  ||  namberUser == false) {
-    break;
-    }   
-    /*while(true) {
-        isNan(namberUser)
-        console.log("Error");
+while (true) {
+    let namberUser= +prompt("Please, enter the number");
+    if (isNaN(namberUser)){
+        alert("Please, enter the number");
+    } else if(namberUser == ''  ||  namberUser == false){
         break;
-    }  */
+    } else{
+        sum=sum+namberUser;
+        num++
+    } 
 }
-console.log("Общая сумма = " + sum, "Среднее арифметическое введённых чисел = " + sum/num);    
+console.log("Общая сумма = " + sum, "Среднее арифметическое введённых чисел = " + sum/num);
 
 //9) 
 console.log("***********9.");
 let z = "4 98 4 6 1 32 4 65 4 3 5 7 89 7 10 1 36 8 57";
 let massZ= z.split(" ");
-console.log(massZ, typeof(massZ));
-let r=Math.max(massZ);
-console.log(r);
-i= z[0];
+let max=massZ[0], min=massZ[0];
+for (i=0; i<=massZ.length; i++){
+    if (massZ[i] > max){
+        max=massZ[i];
+    }
+    if (massZ[i] < min){
+        min=massZ[i];
+    }
+}
+console.log(`MAX ${max}, MIN ${min}`); 
 
-console.log(r[3])
-
-
+//10) 
+console.log("***********10.");
+n=+prompt("Пожалуйста, укажите число");
+document.write("***********10." + "<br/>");
+namb = [];
+num=0;
+sum=0;
+let str=n.toString();
+for(i=0; i<str.length; i++){
+    namb.push(str.charAt(i));  //a.
+    num++; //b.
+    sum=sum+ +str[i];   //c.
+}
+document.write("a. цифры из числа = " + namb);
+console.log("b. количество цифр = " + num);
+console.log("c. сумма цифр = " + sum );
+console.log("d. обратный порядок цифр = " + namb.reverse()); //d.
