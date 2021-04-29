@@ -70,4 +70,3 @@ console.log(x3, typeof x3);
 console.log("***********8. возвращаем приветствие");
 let nameUser=prompt("What is your name?");
 alert(`Hello, ${nameUser} how are you doing today?`);
-

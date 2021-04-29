@@ -83,7 +83,7 @@ while (true) {
         break;
     } else{
         sum=sum+namberUser;
-        num++
+        num++;
     } 
 }
 console.log("Общая сумма = " + sum, "Среднее арифметическое введённых чисел = " + sum/num);
