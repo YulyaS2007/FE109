@@ -3,12 +3,12 @@ console.log("***********1.");
 let i=1;
 while (i <= 50){
     console.log(i);
-    i++
+    i++;
 }
 i=35;
 while ((i <= 35) && (i>=8)){
     console.log(i);
-    i--
+    i--;
 }
 
 //2) 
@@ -16,7 +16,7 @@ console.log("***********2. в документе");
 i=89;
 while (i>=11){
     document.write(i + "<br/>");
-    i--
+    i--;
 }
 
 //3) 
