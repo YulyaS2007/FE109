@@ -1,4 +1,4 @@
-//1.
+/*//1.
 console.log("***********1.");
 function calculation1 (a,b) {
     return (a-b)/2;    
@@ -152,4 +152,22 @@ function enterArr(array) {
 }
 let i=0;
 enterArr([2, 5, -9, 15, 25,-8]);
-    
+*/
+//9.
+console.log("***********9.");
+function nowDate () {
+    let dateNow = new Date(),
+    hoursDay = dateNow.getHours();
+    if(hoursDay>=6 && hoursDay<12){
+        return ("Доброе утро, ") 
+    } else if(hoursDay>=12 && hoursDay<18){
+        return ("Добрый день, ");
+    }
+    else if(hoursDay>=18 && hoursDay<00){
+        return ("Добрый вечер, " + hoursDay);
+    } else{
+        return ("Доброй ночи, " + hoursDay);
+    }
+}
+let whatName = prompt("Как тебя зовут?");
+console.log(nowDate () + whatName + " =)");
