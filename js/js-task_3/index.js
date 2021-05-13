@@ -43,7 +43,7 @@ for (i=1; i<=a; i++){
 //5) 
 console.log("***********5.");
 for (i=8; i<=56; i++){
-    if (i%2 != 0) continue;
+    if (i%2 != 0) continue; //четные
     console.log (i);
 }   
 
