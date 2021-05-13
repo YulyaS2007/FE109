@@ -1,4 +1,4 @@
-/*//1.
+//1.
 console.log("***********1.");
 function calculation1 (a,b) {
     return (a-b)/2;    
@@ -152,7 +152,7 @@ function enterArr(array) {
 }
 let i=0;
 enterArr([2, 5, -9, 15, 25,-8]);
-*/
+
 //9.
 console.log("***********9.");
 function nowDate () {
