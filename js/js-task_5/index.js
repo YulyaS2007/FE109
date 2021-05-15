@@ -91,7 +91,7 @@ console.log("***********5.");
 
 let userNamb=prompt("Введите число");
 function isEven(param){
-    if (Number.isInteger(param) == false && param == 0){ //считает ноль четным???
+    if (Number.isInteger(param) == false || param == 0){ //считает ноль четным???
         console.log("Вводимое значение не является целым числом");
     } else if(param % 2 != 0){
         return false;
@@ -163,7 +163,7 @@ function nowDate () {
     } else if(hoursDay>=12 && hoursDay<18){
         return ("Добрый день, ");
     }
-    else if(hoursDay>=18 && hoursDay<00){
+    else if(hoursDay>=18 && hoursDay<=24){
         return ("Добрый вечер, " + hoursDay);
     } else{
         return ("Доброй ночи, " + hoursDay);
