@@ -124,6 +124,24 @@ function word2(map) {
 }
 console.log(word2(mapUser));
 
+console.log("***********11. 3-ий способ(ката)");
+let grid=[
+    ['m', 'y', 'e'], 
+    ['x', 'a', 'm'], 
+    ['p', 'l', 'e']
+];
+let indices=[1, 3, 5, 8];
+
+function gridIndex(grid, indices) {
+    let arr=grid.flat();
+    let str='';
+    for (let i=0; i<indices.length; i++){
+        str+=arr[indices[i]-1] //str=str+arr[indices[i]-1]
+    }
+    return str;
+}
+console.log(gridIndex(grid, indices));
+
 //12.
 console.log("***********12.");
 function testit(a,b){
