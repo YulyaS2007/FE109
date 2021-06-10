@@ -1,6 +1,6 @@
 // Домашняя работа №7
 //Калькулятор.
-console.log("***********Калькулятор");
+/*console.log("***********Калькулятор");
 
 let Calc = function() {
 
@@ -96,47 +96,77 @@ let WorldCup = function() {
 }
 let worldCup = new WorldCup();
 worldCup.get();
-
+*/
 //Light bulb.
 console.log("***********Light bulb");
 
-let LightBulb = function() {
+let LightBulb = function(name) {
 
-    this.get = function(){
-        this.power = +prompt("Ввведите мощность лампочки, Вт", 12);
-        this.costEnergy = +prompt("Введите стоимость электроэнергии за 1Квт", 2);
-        if (confirm("Включить лампочку?")){
-            this.workTime = +prompt("Сколько времени работает лампочка (часов)?")
-        } else{ 
-            this.workTime = 0;
+    this.onOf = function() {
+        this.name = name;
+        if (confirm(`Включить лампочку (${name})?`)){ //да
+            this.workTime = +prompt(`Сколько времени работает лампочка (${name}) (часов)?`);
+            this.get();            
+        } else{ // нет
+            this.workTime = 0 || this.workTime == undefined;
+            console.log(`Лампочку (${name}) не включили!`);
+            this.result = 0;
         }
+    }
+
+    this.get = function(){     
+        this.power = +prompt(`Ввведите мощность лампочки (${name}), Вт`, 12);
+        this.costEnergy = +prompt(`Введите стоимость электроэнергии лампочки (${name}) за 1Квт`, 2);
+    
         this.calculation();
     }
 
     this.calculation = function(){
-        this.result = (this.power / 1000) * this.costEnergy * this.workTime;
-        this.show();
+            this.result = (this.power / 1000) * this.costEnergy * this.workTime;
+            this.show();  
     };
      
     this.show = function () {
         if (this.workTime == 0 || this.workTime == undefined) {
-            console.log("Лампочка не включена");
+            console.log(`Лампочка (${name}) не включена`);
         } else {
-            console.log("Лампочка проработала - " + this.workTime + "ч, и стоимость потраченой электроэнергии составляет = " + this.result + " усл.ед.");
+            console.log(`Лампочка (${name}) проработала - ` + this.workTime + "ч, и стоимость потраченой электроэнергии составляет = " + this.result + " усл.ед.");
             }
         };
     };
      
-    let kitchen = new LightBulb("Кухня");
-    kitchen.get();
-     
-    let bedroom = new LightBulb("Коридор");
-    bedroom.get();
-     
-    let bathroom = new LightBulb("Ванная");
-    bathroom.get();
-     
-    let totalCost = kitchen.result + bedroom.result + bathroom.result;
-     
-    console.log("Всего стоимость потраченной электроэнергии составляет - " + totalCost + "усл.ед.");
+let kitchen = new LightBulb("Кухня");
+kitchen.onOf();
+    
+let bedroom = new LightBulb("Коридор");
+bedroom.onOf();
+
+// Домашняя работа №10: 1-ая часть:
+    
+/*let Lamp = function(name) {
+    this.name = name;
+}*/
+
+let Bathroom = function(name){
+
+    LightBulb.apply(this, arguments);
+
+    this.workTime = 24;
+
+    this.onOf = function() {
+        this.name = name;
+        this.get();  
+    }
+
+    this.show = function() {
+        console.log(`Лампочка (${name}) работает постоянно, и стоимость потраченой электроэнергии в сутки составляет = ` + this.result + " усл.ед.");
+    }
+}
+
+let bathroom = new Bathroom("Ванная");
+bathroom.onOf();
+    
+let totalCost = kitchen.result + bedroom.result + bathroom.result;
+    
+console.log("Всего стоимость потраченной электроэнергии составляет - " + totalCost + "усл.ед.");
  

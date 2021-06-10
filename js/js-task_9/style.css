@@ -1,0 +1,160 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Indie Flower', cursive;
+}
+
+section {
+    width: 500px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(252, 167, 167, 0.836);
+    border: 2px solid rgb(138, 232, 255);
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.header{
+    display: flex;
+    justify-content: space-around;
+}
+h1 {
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    background: url(images/forh1background.png);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: lavender;
+    background-size: 100% 100%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color: transparent;
+}
+p{
+    width: 94px;
+    height: 31px;
+    background: url(images/todo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    margin: auto 0;
+}
+.task {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid rgb(138, 232, 255);
+    padding-bottom: 30px;
+}
+.description-task {
+    font-family: 'Indie Flower', cursive;
+    height: 40px;
+    width: 50%;
+    margin-right: 15px;
+   /* border: none;*/
+    border-radius: 15px;
+    padding-left: 15px;
+    border-color: rgb(138, 232, 255);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+button>img {
+    overflow: hidden;
+    border-radius: 15px;
+}
+button{
+    font-family: 'Indie Flower', cursive;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 42px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: white;
+    background: url(images/trash.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25px 25px;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 15px;
+    outline: none;
+
+}
+.item-completed{
+    margin-right: 10px;
+}
+.item-deleted{
+    border: none;
+    margin-right: 15px;
+}
+
+.add-task-button {
+    width: 120px;
+    height: 40px;
+    background: url(images/tforbuttonbackground.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    border-color: rgb(17, 52, 207);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+}
+.add-task-button:hover {
+    text-shadow: -2px -2px 2px rgb(243, 239, 234);
+    transition: 1s;
+    color: #eb0e45;
+}
+.create-tasks {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.description-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid rgb(138, 232, 255);
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+.description-item-text {
+    font-family: 'Dancing Script', cursive;
+    padding-left: 15px;
+    line-height: 42px;
+    width: 60%;
+}
+.buttons-item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+.description-item.checked > .description-item-text {
+    text-decoration-line: line-through;
+}
+
+.create-tasks.delition {
+    animation: opacity 1s ease-in-out;
+}
+@keyframes opacity {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+
+
+
