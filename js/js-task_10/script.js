@@ -6,7 +6,7 @@ let WorkDom = function(){
     }
 //2) attr(‘element’, ‘name’, [‘value’]) для добавления атрибута к элементу или возврата значения атрибута;
     this.attr = function(element, name, value) {
-        return element.setAttribute(name,value) || element.getAttribute(name);
+        element.setAttribute(name,value) || element.getAttribute(name);
     }
 //3) html(‘element’, [‘value’]) для добавления любого содержимого внутрь элемента или его возврата;
     this.html = function(element, value) {
@@ -19,15 +19,15 @@ let WorkDom = function(){
     }
 //5) addClass(‘element’, ‘className’) для добавления класса к элементу;
     this.addClass = function(element, className) {
-        return element.classList.add(className);
+        element.classList.add(className);
     }
 //6) removeClass(‘element’, ‘className’) для удаления класса из элемента;
     this.removeClass = function(element, className) {
-        return element.classList.remove(className);
+        element.classList.remove(className);
     }
 //7) toggleClass(‘element’, ‘className’) для переключения класса в элементе (добавляет или удаляет класс в эл-те в зависимости от того, есть он или нет);
     this.toggleClass = function(element, className) {
-        return element.classList.toggle(className);
+        element.classList.toggle(className);
     }
 //9) hasClass(‘element’, ‘className’) для проверки существования класса в элементе (должен вернуть true или false);
     this.hasClass = function(element, className) {
@@ -44,7 +44,6 @@ let WorkDom = function(){
     }
 //11) on(‘element’, ‘eventName’, ‘funcName’) для добавления к элементу события и выполнения функции (проверьте доступность контекста this и event).
     this.on = function(element, eventName, funcName) {
-
         return element.addEventListener(eventName, funcName);
     }
 }
@@ -58,10 +57,8 @@ console.log(h1);
 let div = workDom.create("div");
 console.log(div);
 // 2)
-let elem = workDom.attr(h1,"class","attr");
-console.log(elem);
-let elemDiv = workDom.attr(div,"class","all");
-console.log(elemDiv);
+workDom.attr(h1,"class","attr");
+workDom.attr(div,"class","all");
 // 3)
 let elem3 = workDom.html(h1, "Hello!");
 console.log(elem3);
@@ -73,11 +70,11 @@ let elem4 = workDom.search(body, "div");
 console.log(elem4);
 
 // 5)
-let elem5 = workDom.addClass(div, "here");
+workDom.addClass(div, "here");
 // 6)
-let elem6 = workDom.removeClass(div, "all");
+workDom.removeClass(div, "all");
 // 7)
-let elem7 = workDom.toggleClass(div, "all");
+workDom.toggleClass(div, "all");
 // 9)
 let elem9 = workDom.hasClass(div, "all");
 console.log(elem9);
