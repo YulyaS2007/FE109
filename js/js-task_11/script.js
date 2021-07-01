@@ -1,4 +1,6 @@
 "use strict";
+
+let indexUser = null;
 class User {
 
     constructor(id, firstName, email, address, phone) {
@@ -44,7 +46,6 @@ class Contacts {
     getInfo(id) {
         let index = this.data.findIndex(elem => elem.dataUser.id == id);
         return this.data[index];
-      //  console.log(this.data[index]);//ошибку тут выдает
     }
 
     get() {
@@ -92,7 +93,7 @@ class ContactsApp extends Contacts{
             <td class="elemAddress">${elem.dataUser.address}</td>
             <td class="elemPhone">${elem.dataUser.phone}</td>
             <td class="pensil">
-                <button data-index="${index}  onclick="editContact(${elem.dataUser.id, elem})" class="btn btn-edit" type="submit">
+                <button class="btn btn-edit" type="submit">
                     <p></p>
                 </button>
             </td>
@@ -103,6 +104,8 @@ class ContactsApp extends Contacts{
         })
     }
 }
+//<button data-index="${index}  onclick="editContact(${elem.dataUser.id})" class="btn btn-edit" type="submit"><p></p></button>
+
 
 let checkForm = function() {
         let firstName = document.getElementById("firstNameLabel").value,
@@ -140,36 +143,103 @@ let deleteContact = function(index) {
             contactBook.show();
         }
     }
-let editContact = function(index, newInfo) {
-    // let contactList = document.querySelector(".contactListAll");
-    // let contactForm = document.querySelector(".formForUser");
 
-    // let firstName = contactForm.getElementById("firstNameLabel").value,
-    //     email = contactForm.getElementById("emailLabel").value,
-    //     address = contactForm.getElementById("addressLabel").value,
-    //     phone = contactForm.getElementById("phoneLabel").value;
-    // if(confirm("Вы уверены, что хотите редактировать пользователя?")) {
-    //     //чтобы данные пользователя опять перенеслись в форму
-    //     firstName = contactList.querySelector(".elemFirstName").innerHTML;
-    //     email = contactList.querySelector(".elemEmail").innerHTML;
-    //     address = contactList.querySelector(".elemAddress").innerHTML;
-    //     phone = contactList.querySelector(".elemPhone").innerHTML;
-
-        contactBook.edit(index, newInfo);
+let deleteContactAll = function(index) {
+    if(confirm("Вы уверены, что хотите очистить список ВСЕХ пользователей?")) {
+        contactBook.removeAll();
         contactBook.show();
-    //}
+    }
 }
+
+// let editContact = function(index) {
+//     indexUser = index;
+//     let contactList = document.querySelector(".contactList");
+//     let contactForm = document.querySelector(".formForUser");
+
+//     let firstName = contactForm.getElementById("firstNameLabel").value,
+//         email = contactForm.getElementById("emailLabel").value,
+//         address = contactForm.getElementById("addressLabel").value,
+//         phone = contactForm.getElementById("phoneLabel").value;
+//     if(confirm("Вы уверены, что хотите редактировать пользователя?")) {
+//         //чтобы данные пользователя опять перенеслись в форму
+//         firstName = contactList.querySelector(".elemFirstName").innerHTML;
+//         email = contactList.querySelector(".elemEmail").innerHTML;
+//         address = contactList.querySelector(".elemAddress").innerHTML;
+//         phone = contactList.querySelector(".elemPhone").innerHTML;
+//         // let firstName = document.getElementById("firstNameLabel").value,
+//         // email = document.getElementById("emailLabel").value,
+//         // address = document.getElementById("addressLabel").value,
+//         // phone = document.getElementById("phoneLabel").value;
+//         // if(!firstName || !email || !address || !phone) {
+//         //     alert("Заполните все поля!");
+//         //     return false;
+//         // } else {
+//         //     contactBook.edit(index, newInfo);;
+//         //     document.querySelector(".formForUser").reset("");
+//         // }
+//         contactBook.edit(index, newInfo);
+//         contactBook.show();
+//     //}
+// }
 
 contactBook.addUser('Alex', 'alex@gmail.com', 'address Alex', '+375331');
 contactBook.addUser('Bob', 'bob@gmail.com', 'address Bob', '+375332');
 contactBook.addUser('Stepan', 'stepan@gmail.com', 'address Stepan', '+37533');
 
+// добавляю нового пользователя
 const addBtnSubmit = document.querySelector(".btn-submit");
 addBtnSubmit.addEventListener('click', checkForm);
 
-// const btnEdit = document.querySelector(".btn-edit");
-// btnEdit.addEventListener("click", editContact);
+
+//РЕДАКТИРОВАНИЕ
+
+let btnEdit = document.querySelector(".btn-edit");
+
+btnEdit.addEventListener("click", function() {
+    this.classList.add("active");
+    let tdThisUser = this.closest("tr");
+    let editThisUserNodelist = tdThisUser.querySelectorAll("td");
+    let editThisUser = Array.prototype.slice.call(editThisUserNodelist); //преобразую Nodelist в массив
+    console.log(editThisUser)
+ //   let contactForm = document.querySelector(".formForUser");
+    
+ 
+    let firstName = document.getElementById("firstNameLabel").value,
+        email = document.getElementById("emailLabel").value,
+        address = document.getElementById("addressLabel").value,
+        phone = document.getElementById("phoneLabel").value;
+
+console.log(firstName)
+    if(confirm("Вы уверены, что хотите редактировать пользователя?")) {
+        //чтобы данные пользователя опять перенеслись в форму
+        firstName = `${editThisUser[1].innerHTML}`;
+        console.log(firstName);
+        email = `${editThisUser[2].innerHTML}`;
+        address = `${editThisUser[3].innerHTML}`;
+        phone = `${editThisUser[4].innerHTML}`;
+
+        // firstName = editThisUser[1].innerHTML;
+        // console.log(firstName);
+        // email = editThisUser[2].innerHTML;
+        // address = editThisUser[3].innerHTML;
+        // phone = editThisUser[4].innerHTML;
+
+        // firstName = editThisUser[td.elemFirstName].value;
+        // email = tdThisUser.querySelector(".elemEmail").value;
+        // address = tdThisUser.querySelector(".elemAddress").value;
+        // phone = tdThisUser.querySelector(".elemPhone").value;
+    }
+    // checkForm();
+    // btnEdit.classList.remove("active");
+    // contactBook.show();
+});
 
 
+
+
+
+
+const btndelAll = document.querySelector(".btn-delAll");
+btndelAll.addEventListener('click', deleteContactAll);
 
 
