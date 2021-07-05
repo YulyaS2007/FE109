@@ -61,20 +61,6 @@ class Contacts {
     }
 }
 
-let oneUser = new Contacts();
-
-// проверяем работу нахождения пользователя по индексу
-// oneUser.addUser('Alex', 'alex@gmail.com', 'address Alex', '+375331');
-// oneUser.addUser('Bob', 'bob@gmail.com', 'address Bob', '+375332');
-// oneUser.addUser('Stepan', 'stepan@gmail.com', 'address Stepan', '+37533');
-// console.log(oneUser.getInfo(1));
-// console.log(oneUser.getInfo(2));
-
-//проверяем работу редактирования
-// oneUser.edit(2, {firstName: 'StepanNew', email:'stepanNew@gmail.com', address: 'address StepanNew', phone: '+37533'});
-// console.log(oneUser.getInfo(2));
-
-
 class ContactsApp extends Contacts{
     constructor(data) {
         super(data);
@@ -84,7 +70,13 @@ class ContactsApp extends Contacts{
         //document.querySelector(".contacts").classList.add("active");
         let contactTable = document.querySelector(".contactList");
         contactTable.innerHTML = "";
+
         this.data.forEach((elem, index) => {
+            let btnEdit = document.createElement("button");
+            btnEdit.classList.add("btn-edit");
+            btnEdit.classList.add("btn");
+            btnEdit.innerHTML = "<p></p>";
+
             let line = document.createElement("tr");
             line.innerHTML = `
             <td class="elemId">${elem.dataUser.id}</td>
@@ -93,21 +85,26 @@ class ContactsApp extends Contacts{
             <td class="elemAddress">${elem.dataUser.address}</td>
             <td class="elemPhone">${elem.dataUser.phone}</td>
             <td class="pensil">
-                <button class="btn btn-edit" type="submit">
-                    <p></p>
-                </button>
+            
             </td>
             <td class="trash">
                 <button data-index="${index}" onclick="deleteContact(${elem.dataUser.id})" class="btn btn-del" type="reset"><p></p></button>
             </td>`;
+
+            line.querySelector(".pensil").appendChild(btnEdit);
+            btnEdit.addEventListener("click", editContact);
             contactTable.appendChild(line);
         })
     }
 }
-//<button data-index="${index}  onclick="editContact(${elem.dataUser.id})" class="btn btn-edit" type="submit"><p></p></button>
 
+//создаю объект
+let contactBook = new ContactsApp();
 
+//создаю медоды для работы с объектом
+//1. создание нового пользователя
 let checkForm = function() {
+    if (this.dataset.action != "edit") {
         let firstName = document.getElementById("firstNameLabel").value,
             email = document.getElementById("emailLabel").value,
             address = document.getElementById("addressLabel").value,
@@ -119,24 +116,61 @@ let checkForm = function() {
             addNewContact(firstName, email, address, phone);
             document.querySelector(".formForUser").reset("");
         }
+    } else {
+        let firstName = document.getElementById("firstNameLabel").value,
+            email = document.getElementById("emailLabel").value,
+            address = document.getElementById("addressLabel").value,
+            phone = document.getElementById("phoneLabel").value;
+
+        let id = this.dataset.id;
+        let newInfo = {
+            firstName: firstName,
+            email: email,
+            address: address,
+            phone: phone
+        };
+        contactBook.edit(id, newInfo);
+        // удаление data из кнопки
+        let submit = document.querySelector(".formForUser .btn-submit");
+        submit.removeAttribute("data-action");
+        submit.removeAttribute("data-id");
+
+        contactBook.show();
+        document.querySelector(".formForUser").reset("");
     }
-
-let contactBook = new ContactsApp();
-
-//исходная информация
-contactBook.addUser('Alex', 'alex@gmail.com', 'address Alex', '+375331');
-contactBook.addUser('Bob', 'bob@gmail.com', 'address Bob', '+375332');
-contactBook.addUser('Stepan', 'stepan@gmail.com', 'address Stepan', '+37533');
-
-console.log(contactBook.getInfo(2));
+}
 
 let addNewContact = function(firstName, email, address, phone) {
         contactBook.addUser(firstName, email, address, phone);
         contactBook.show();
     }
-let showContacts = function() {
-        contactBook.show();
-    }
+
+//2.РЕДАКТИРОВАНИЕ
+const editContact = function() {
+   // console.log("edit!");
+    let elemId = this.closest("tr").querySelector(".elemId").innerHTML;
+
+    let user = contactBook.data.filter(function(user) {
+        if (+user.dataUser.id == +elemId) return user.dataUser;
+    });
+    console.log(user[0].dataUser);
+
+    let firstName = document.getElementById("firstNameLabel"),
+        email = document.getElementById("emailLabel"),
+        address = document.getElementById("addressLabel"),
+        phone = document.getElementById("phoneLabel");
+    
+        firstName.value = user[0].dataUser.firstName;
+        email.value = user[0].dataUser.email;
+        address.value = user[0].dataUser.address;
+        phone.value = user[0].dataUser.phone;
+
+    let submit = document.querySelector(".formForUser .btn-submit");
+    submit.dataset.action = "edit";
+    submit.dataset.id = user[0].dataUser.id; //добавляю id в атрибут
+}
+
+//3. удаление пользователя
 let deleteContact = function(index) {
         if(confirm("Вы уверены, что хотите удалить пользователя?")) {
             contactBook.remove(index);
@@ -144,102 +178,44 @@ let deleteContact = function(index) {
         }
     }
 
+//4. удаление всех пользователей
 let deleteContactAll = function(index) {
     if(confirm("Вы уверены, что хотите очистить список ВСЕХ пользователей?")) {
         contactBook.removeAll();
         contactBook.show();
     }
 }
+//5. отрисовка таблицы с контактами
+let showContacts = function() {
+        contactBook.show();
+    }
 
-// let editContact = function(index) {
-//     indexUser = index;
-//     let contactList = document.querySelector(".contactList");
-//     let contactForm = document.querySelector(".formForUser");
 
-//     let firstName = contactForm.getElementById("firstNameLabel").value,
-//         email = contactForm.getElementById("emailLabel").value,
-//         address = contactForm.getElementById("addressLabel").value,
-//         phone = contactForm.getElementById("phoneLabel").value;
-//     if(confirm("Вы уверены, что хотите редактировать пользователя?")) {
-//         //чтобы данные пользователя опять перенеслись в форму
-//         firstName = contactList.querySelector(".elemFirstName").innerHTML;
-//         email = contactList.querySelector(".elemEmail").innerHTML;
-//         address = contactList.querySelector(".elemAddress").innerHTML;
-//         phone = contactList.querySelector(".elemPhone").innerHTML;
-//         // let firstName = document.getElementById("firstNameLabel").value,
-//         // email = document.getElementById("emailLabel").value,
-//         // address = document.getElementById("addressLabel").value,
-//         // phone = document.getElementById("phoneLabel").value;
-//         // if(!firstName || !email || !address || !phone) {
-//         //     alert("Заполните все поля!");
-//         //     return false;
-//         // } else {
-//         //     contactBook.edit(index, newInfo);;
-//         //     document.querySelector(".formForUser").reset("");
-//         // }
-//         contactBook.edit(index, newInfo);
-//         contactBook.show();
-//     //}
-// }
 
+
+//исходная информация
 contactBook.addUser('Alex', 'alex@gmail.com', 'address Alex', '+375331');
 contactBook.addUser('Bob', 'bob@gmail.com', 'address Bob', '+375332');
 contactBook.addUser('Stepan', 'stepan@gmail.com', 'address Stepan', '+37533');
+showContacts();
+
 
 // добавляю нового пользователя
 const addBtnSubmit = document.querySelector(".btn-submit");
 addBtnSubmit.addEventListener('click', checkForm);
-
-
-//РЕДАКТИРОВАНИЕ
-
-let btnEdit = document.querySelector(".btn-edit");
-
-btnEdit.addEventListener("click", function() {
-    this.classList.add("active");
-    let tdThisUser = this.closest("tr");
-    let editThisUserNodelist = tdThisUser.querySelectorAll("td");
-    let editThisUser = Array.prototype.slice.call(editThisUserNodelist); //преобразую Nodelist в массив
-    console.log(editThisUser)
- //   let contactForm = document.querySelector(".formForUser");
-    
- 
-    let firstName = document.getElementById("firstNameLabel").value,
-        email = document.getElementById("emailLabel").value,
-        address = document.getElementById("addressLabel").value,
-        phone = document.getElementById("phoneLabel").value;
-
-console.log(firstName)
-    if(confirm("Вы уверены, что хотите редактировать пользователя?")) {
-        //чтобы данные пользователя опять перенеслись в форму
-        firstName = `${editThisUser[1].innerHTML}`;
-        console.log(firstName);
-        email = `${editThisUser[2].innerHTML}`;
-        address = `${editThisUser[3].innerHTML}`;
-        phone = `${editThisUser[4].innerHTML}`;
-
-        // firstName = editThisUser[1].innerHTML;
-        // console.log(firstName);
-        // email = editThisUser[2].innerHTML;
-        // address = editThisUser[3].innerHTML;
-        // phone = editThisUser[4].innerHTML;
-
-        // firstName = editThisUser[td.elemFirstName].value;
-        // email = tdThisUser.querySelector(".elemEmail").value;
-        // address = tdThisUser.querySelector(".elemAddress").value;
-        // phone = tdThisUser.querySelector(".elemPhone").value;
-    }
-    // checkForm();
-    // btnEdit.classList.remove("active");
-    // contactBook.show();
-});
-
-
-
-
-
-
+// удаляю полностью список пользователей
 const btndelAll = document.querySelector(".btn-delAll");
 btndelAll.addEventListener('click', deleteContactAll);
+
+
+
+//редактирование, если кнопка уже существует
+//let btnEdit = document.querySelectorAll(".btn-edit");
+// btnEdit.forEach(function(btn) {
+//     btn.addEventListener("click", editContact);
+// });
+
+
+
 
 
