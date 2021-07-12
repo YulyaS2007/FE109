@@ -1,6 +1,6 @@
 "use strict";
 
-let indexUser = null;
+//let indexUser = null;
 class User {
 
     constructor(id, firstName, email, address, phone) {
@@ -15,12 +15,18 @@ class User {
             address: newInfo.address || this.dataUser.address,
             phone: newInfo.phone || this.dataUser.phone}
     }
+    // set info(data) {
+    //     this.data = data;
+    // }
 
-    get info() {
-        return this.dataUser;
-    }
-
+    // get info() {
+    //     return this.dataUser;
+    // }
 }
+
+// let user1 = new User;
+// user1 = ({firstName: 'Alex', email: 'alex@gmail.com', address:'address Alex', phone:'+375331'})
+// console.log(user1.info);
 
 class Contacts {
     constructor() {
@@ -28,19 +34,34 @@ class Contacts {
     }
 
     addUser(firstName, email, address, phone) {
+
+        //if (!this.data) this.data = []; //без этой записи массив почему-то равен нулю
         let id;
-        if(this.data.length == 0) {
+        if(this.data && this.data.length == 0) {
             id = 1;
         } else {
             id = this.data[this.data.length-1].dataUser.id + 1;
         }
         let newUser = new User(id, firstName, email, address, phone);
         this.data.push(newUser);
+// при создании нового пользователя, в localStorage заносятся данные по каждому пользователю со своим идентификатором
+        localStorage.setItem(`${id}`, JSON.stringify(newUser.dataUser)); //ихххххххуууууууууууууу
+       // console.log(newUser.dataUser)
     }
 
     edit(id, newInfo) {
         let index = this.data.findIndex(elem => elem.dataUser.id == id);
         this.data[index].edit(newInfo);
+
+       // localStorage.setItem(`${id}`, JSON.stringify(newInfo)); //не пушится id в новую инфу
+        let editUser = new User({
+            id: +id,
+            firstName: newInfo.firstName || this.dataUser.firstName,
+            email: newInfo.email || this.dataUser.email,
+            address: newInfo.address || this.dataUser.address,
+            phone: newInfo.phone || this.dataUser.phone});
+        
+        localStorage.setItem(`${id}`, JSON.stringify(editUser.dataUser.id)); 
     }
 
     getInfo(id) {
@@ -54,24 +75,77 @@ class Contacts {
 
     remove(id) {
         this.data = this.data.filter(elem => elem.dataUser.id !== id);
+
+        localStorage.removeItem(`${id}`);
+
     }
 
     removeAll() {
         this.data = [];
+        localStorage.clear();
     }
 }
 
 class ContactsApp extends Contacts{
-    constructor(data) {
-        super(data);
+
+    constructor() {
+        super();
+        
+        this.updateLocal()
+
+        // if (!this.getCookie('')) {
+        //     localStorage.removeItem('');
+        // }
     }
+
+    // get storage() {
+    //     return localStorage.getItem('contactsData');
+    // }
+
+    // set storage(data) {
+
+    //     localStorage.setItem('contactsData', data);
+    // }
+
+
+
+
+
+
+
+   // 7. обновление информации, которую забираем из localStorage
+    updateLocal = function() {
+        let arrKey = [];
+        let keys = Object.keys(localStorage); 
+
+        for (let key of keys) {
+            if(key) {
+                let attLoc = JSON.parse(localStorage.getItem(key)); 
+                arrKey.push(attLoc);
+
+            //console.log(JSON.parse(attLoc));
+            }
+        }
+       // console.log(arrKey);
+
+        this.data = arrKey || []; // .parse - метод для преобразования JSON опять в объект
+        this.show();
+    }
+
+    // getCookie(name) {
+    //     let matches = document.cookie.match(new RegExp(
+    //         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    //     ));
+    //     return matches ? decodeURIComponent(matches[1]) : undefined;
+    // }
+    
 
     show() {
         //document.querySelector(".contacts").classList.add("active");
         let contactTable = document.querySelector(".contactList");
         contactTable.innerHTML = "";
 
-        this.data.forEach((elem, index) => {
+        if (this.data) this.data.forEach((elem, index) => {
             let btnEdit = document.createElement("button");
             btnEdit.classList.add("btn-edit");
             btnEdit.classList.add("btn");
@@ -98,24 +172,27 @@ class ContactsApp extends Contacts{
     }
 }
 
-//создаю объект
-let contactBook = new ContactsApp();
 
-//создаю медоды для работы с объектом
-//1. создание нового пользователя
+
+//создаю медоды для работы с объектом:
+//1. проверка формы для создания нового пользователя
 let checkForm = function() {
     if (this.dataset.action != "edit") {
         let firstName = document.getElementById("firstNameLabel").value,
             email = document.getElementById("emailLabel").value,
             address = document.getElementById("addressLabel").value,
             phone = document.getElementById("phoneLabel").value;
+
         if(!firstName || !email || !address || !phone) {
             alert("Заполните все поля!");
             return false;
         } else {
-            addNewContact(firstName, email, address, phone);
+            addNewContact(firstName, email, address, phone);  
             document.querySelector(".formForUser").reset("");
+
+          //  localStorage.setItem('contactsData', JSON.stringify(contactBook.data));
         }
+
     } else {
         let firstName = document.getElementById("firstNameLabel").value,
             email = document.getElementById("emailLabel").value,
@@ -123,13 +200,18 @@ let checkForm = function() {
             phone = document.getElementById("phoneLabel").value;
 
         let id = this.dataset.id;
+
         let newInfo = {
             firstName: firstName,
             email: email,
             address: address,
             phone: phone
         };
-        contactBook.edit(id, newInfo);
+
+        contactBook.edit(id, newInfo);        
+
+      //  localStorage.setItem('contactsData', JSON.stringify(contactBook.data));
+
         // удаление data из кнопки
         let submit = document.querySelector(".formForUser .btn-submit");
         submit.removeAttribute("data-action");
@@ -140,20 +222,19 @@ let checkForm = function() {
     }
 }
 
+//2. добавление нового пользователя
 let addNewContact = function(firstName, email, address, phone) {
         contactBook.addUser(firstName, email, address, phone);
         contactBook.show();
     }
 
-//2.РЕДАКТИРОВАНИЕ
+//3.РЕДАКТИРОВАНИЕ
 const editContact = function() {
-   // console.log("edit!");
     let elemId = this.closest("tr").querySelector(".elemId").innerHTML;
 
     let user = contactBook.data.filter(function(user) {
         if (+user.dataUser.id == +elemId) return user.dataUser;
     });
-    console.log(user[0].dataUser);
 
     let firstName = document.getElementById("firstNameLabel"),
         email = document.getElementById("emailLabel"),
@@ -170,52 +251,63 @@ const editContact = function() {
     submit.dataset.id = user[0].dataUser.id; //добавляю id в атрибут
 }
 
-//3. удаление пользователя
+//4. удаление пользователя
 let deleteContact = function(index) {
         if(confirm("Вы уверены, что хотите удалить пользователя?")) {
             contactBook.remove(index);
+            
+            //localStorage.setItem('contactsData', JSON.stringify(contactBook.data));
+
+           // localStorage.removeItem("contactsData")
+
             contactBook.show();
         }
     }
 
-//4. удаление всех пользователей
+//5. удаление всех пользователей
 let deleteContactAll = function(index) {
     if(confirm("Вы уверены, что хотите очистить список ВСЕХ пользователей?")) {
         contactBook.removeAll();
+        
+       // localStorage.clear();
+
         contactBook.show();
     }
 }
-//5. отрисовка таблицы с контактами
+
+//6. отрисовка таблицы с контактами
 let showContacts = function() {
         contactBook.show();
     }
 
+// //7. обновление информации, которую забираем из localStorage
+// let updateLocal = function() {
+//     contactBook.data = JSON.parse(localStorage.getItem('contactsData')); // .parse - метод для преобразования JSON опять в объект
+//     contactBook.show();
+//     }
 
 
 
-//исходная информация
-contactBook.addUser('Alex', 'alex@gmail.com', 'address Alex', '+375331');
-contactBook.addUser('Bob', 'bob@gmail.com', 'address Bob', '+375332');
-contactBook.addUser('Stepan', 'stepan@gmail.com', 'address Stepan', '+37533');
-showContacts();
+
+//СОЗДАЮ ОБЪЕКТ
+let contactBook = new ContactsApp();
 
 
-// добавляю нового пользователя
+//исходная информация 
+// contactBook.addUser('Alex', 'alex@gmail.com', 'address Alex', '+375331');
+// contactBook.addUser('Bob', 'bob@gmail.com', 'address Bob', '+375332');
+// contactBook.addUser('Stepan', 'stepan@gmail.com', 'address Stepan', '+37533');
+// showContacts();
+
+// добавляю событие на кнопку для добавления нового пользователя
 const addBtnSubmit = document.querySelector(".btn-submit");
 addBtnSubmit.addEventListener('click', checkForm);
-// удаляю полностью список пользователей
+
+// добавляю событие на кнопку для удаления полностью списка пользователей
 const btndelAll = document.querySelector(".btn-delAll");
 btndelAll.addEventListener('click', deleteContactAll);
 
 
 
-//редактирование, если кнопка уже существует
-//let btnEdit = document.querySelectorAll(".btn-edit");
-// btnEdit.forEach(function(btn) {
-//     btn.addEventListener("click", editContact);
-// });
-
-
-
-
-
+//???????????????
+/*не получается правильная выгрузка данных в форме, если снять комментарии с исходных данных (стр.247-251), при удалении добавляются исходные*/
