@@ -214,8 +214,6 @@ let deleteContact = function(index) {
             
             localStorage.setItem('contactsData', JSON.stringify(contactBook.data));
 
-            localStorage.removeItem("contactsData")
-
             contactBook.show();
         }
     }
@@ -266,4 +264,6 @@ btndelAll.addEventListener('click', deleteContactAll);
 
 
 //???????????????
-//не получается правильная выгрузка данных в форме, если снять комментарии с исходных данных (стр.247-251), при удалении добавляются исходные
+//1.не получается правильная выгрузка данных в форме, если снять комментарии с исходных данных (стр.247-251), при удалении добавляются исходные
+
+//2.не получается редактирование, если закрыть и открыть браузер заново

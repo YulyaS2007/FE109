@@ -98,20 +98,6 @@ class ContactsApp extends Contacts{
         // }
     }
 
-    // get storage() {
-    //     return localStorage.getItem('contactsData');
-    // }
-
-    // set storage(data) {
-
-    //     localStorage.setItem('contactsData', data);
-    // }
-
-
-
-
-
-
 
    // 7. обновление информации, которую забираем из localStorage
     updateLocal = function() {
@@ -189,8 +175,6 @@ let checkForm = function() {
         } else {
             addNewContact(firstName, email, address, phone);  
             document.querySelector(".formForUser").reset("");
-
-          //  localStorage.setItem('contactsData', JSON.stringify(contactBook.data));
         }
 
     } else {
@@ -210,7 +194,6 @@ let checkForm = function() {
 
         contactBook.edit(id, newInfo);        
 
-      //  localStorage.setItem('contactsData', JSON.stringify(contactBook.data));
 
         // удаление data из кнопки
         let submit = document.querySelector(".formForUser .btn-submit");
